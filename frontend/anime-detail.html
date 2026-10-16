@@ -3,16 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Anime Detail</title>
-    <link rel="stylesheet" href="/static/css/anime.css">
+    <meta name="theme-color" content="#111116">
+    <meta name="description" content="Discover the details, rating, and story behind your next favorite anime.">
+    <title>Anime details — Anime Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/anime.css?v=12">
+    <script src="/static/js/api.js" defer></script>
+    <script src="/static/js/main.js" defer></script>
+    <script src="/static/js/anime-detail.js?v=9" defer></script>
 </head>
-
 <body>
-    <div id="anime-detail"></div>
-
-    <script src="/static/js/anime-detail.js"></script>
-
+    <header class="site-header">
+        <a class="brand" href="/" aria-label="Anime Hub home">
+            <span class="brand-mark" aria-hidden="true">✦</span>
+            <span>anime<span class="brand-accent">hub</span></span>
+        </a>
+        <div class="header-actions">
+            <a class="back-link" href="/"><span aria-hidden="true">←</span> Back to discover</a>
+            <div class="auth-area" id="auth-area" hidden><a class="sign-in-link" href="/login.html">Sign in</a></div>
+        </div>
+    </header>
+    <main class="detail-main page-shell">
+        <div id="anime-detail" aria-live="polite">
+            <div class="detail-state" role="status">Loading anime details...</div>
+        </div>
+        <section class="comments-section" aria-labelledby="comments-title">
+            <div class="comments-heading">
+                <div>
+                    <p class="detail-kicker">COMMUNITY</p>
+                    <h2 id="comments-title">What do you think?</h2>
+                </div>
+                <span class="comment-count" id="comment-count"></span>
+            </div>
+            <p class="comments-feedback" id="comments-feedback" role="status"></p>
+            <form class="comment-form" id="comment-form" hidden>
+                <label class="visually-hidden" for="comment-input">Write a comment</label>
+                <textarea id="comment-input" name="comment" maxlength="2000" rows="3" placeholder="Share your thoughts about this anime..." required></textarea>
+                <div class="comment-spoiler-controls">
+                    <label><input id="comment-is-spoiler" type="checkbox"> Contains spoilers</label>
+                    <label id="comment-spoiler-episode-wrap" hidden>Spoils through episode
+                        <input id="comment-spoiler-episode" type="number" min="1" step="1" inputmode="numeric" placeholder="Episode #" disabled>
+                    </label>
+                </div>
+                <button class="detail-button" type="submit">Post comment →</button>
+            </form>
+            <p class="comment-sign-in" id="comment-sign-in" hidden><a href="/login.html">Sign in</a> to join the conversation.</p>
+            <div class="comment-list" id="comment-list"></div>
+        </section>
+        <dialog class="detail-edit-dialog" id="detail-edit-dialog" aria-labelledby="detail-edit-title">
+            <form class="detail-edit-form" id="detail-edit-form">
+                <div class="comments-heading">
+                    <div>
+                        <p class="detail-kicker">YOUR CONTRIBUTION</p>
+                        <h2 id="detail-edit-title">Edit anime</h2>
+                    </div>
+                    <button class="dialog-close" id="detail-edit-close" type="button" aria-label="Close form">×</button>
+                </div>
+                <label>Title<input name="title" required maxlength="100"></label>
+                <div class="detail-form-row">
+                    <label>Genres<input name="genre" required maxlength="100" placeholder="Fantasy, Adventure"></label>
+                    <label>Studio<input name="studio" maxlength="100"></label>
+                </div>
+                <div class="detail-form-row">
+                    <label>Rating<input name="rating" type="number" min="0" max="10" step="0.1"></label>
+                    <label>Episodes<input name="episode" type="number" min="1" step="1"></label>
+                </div>
+                <div class="detail-form-row">
+                    <label>Release date<input name="released_date" type="date"></label>
+                    <label>Poster image URL<input name="cover_image" type="url" maxlength="500"></label>
+                </div>
+                <label>Synopsis<textarea name="description" required maxlength="10000" rows="4"></textarea></label>
+                <p class="detail-edit-feedback" id="detail-edit-feedback" role="status"></p>
+                <button class="detail-button" type="submit">Save changes →</button>
+            </form>
+        </dialog>
+    </main>
+    <footer class="site-footer">
+        <a class="brand brand-small" href="/"><span class="brand-mark" aria-hidden="true">✦</span><span>anime<span class="brand-accent">hub</span></span></a>
+        <p>Made for the stories that stay with you.</p>
+        <a href="/">Back to discover</a>
+    </footer>
 </body>
-
 </html>

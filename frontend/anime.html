@@ -3,31 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Anime Hub</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <meta name="theme-color" content="#111116">
+    <meta name="description" content="Find your next favorite anime. Explore a hand-picked collection, search by genre, and save shows to your watchlist.">
+    <title>Anime Hub — Find your next favorite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=18">
+    <script src="/static/js/api.js" defer></script>
+    <script src="/static/js/main.js" defer></script>
+    <script src="/static/js/anime.js?v=15" defer></script>
 </head>
+<body class="home-page">
+    <header class="site-header">
+        <a class="brand" href="/" aria-label="Anime Hub home">
+            <span class="brand-mark" aria-hidden="true">✦</span>
+            <span>anime<span class="brand-accent">hub</span></span>
+        </a>
+        <nav class="main-nav" aria-label="Main navigation">
+            <a class="nav-link is-active" href="#discover">Discover</a>
+            <a class="nav-link" href="#popular">Popular</a>
+        </nav>
+        <div class="header-actions">
+            <button class="watchlist-toggle" id="watchlist-toggle" type="button" aria-pressed="false">
+                <span aria-hidden="true">♡</span>
+                <span>My watchlist</span>
+                <span class="watchlist-count" id="watchlist-count">0</span>
+            </button>
+            <div class="auth-area" id="auth-area" hidden>
+                <a class="sign-in-link" href="/login.html">Sign in</a>
+            </div>
+        </div>
+    </header>
 
-<body>
+    <main>
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-backdrop" id="hero-backdrop"></div>
+            <div class="hero-content">
+                <p class="eyebrow"><span class="eyebrow-dot"></span> YOUR NEXT BINGE STARTS HERE</p>
+                <h1 id="hero-title">Stories worth<br><span>staying up for.</span></h1>
+                <p class="hero-copy">Find your next favorite in a universe of unforgettable anime.</p>
+                <button class="hero-read-more" id="hero-read-more" type="button" aria-expanded="false" hidden>Read more</button>
+                <div class="hero-actions">
+                    <a class="button button-primary" id="hero-explore" href="#discover">
+                        Explore anime <span aria-hidden="true">→</span>
+                    </a>
+                    <a class="button button-quiet" id="hero-featured" href="#discover" hidden>
+                        <span aria-hidden="true">▶</span> Featured title
+                    </a>
+                </div>
+                <div class="hero-rating" id="hero-rating" hidden></div>
+            </div>
+            <div class="hero-art" id="hero-art" aria-hidden="true"></div>
+            <div class="hero-pagination" role="group" aria-label="Featured anime titles"></div>
+        </section>
 
-    <h1>Anime Hub</h1>
+        <section class="mood-section page-shell" aria-labelledby="mood-title">
+            <div class="mood-heading">
+                <div>
+                    <p class="eyebrow eyebrow-muted">YOUR NEXT WATCH, FIGURED OUT</p>
+                    <h2 id="mood-title">What are you <span>in the mood for?</span></h2>
+                    <p class="mood-intro">Pick a feeling, your available time, and a format. We’ll find a few popular matches.</p>
+                </div>
+            </div>
+            <form class="mood-form" id="mood-form">
+                <label>Mood
+                    <select id="mood-choice" name="mood">
+                        <option value="cozy">Something comforting</option>
+                        <option value="hype">Something exciting</option>
+                        <option value="mind-bending">Mind-bending</option>
+                        <option value="heartfelt">Heartfelt</option>
+                        <option value="fantasy">A fantasy escape</option>
+                    </select>
+                </label>
+                <label>Time available
+                    <select id="mood-time" name="time">
+                        <option value="30">About 30 minutes</option>
+                        <option value="60" selected>About an hour</option>
+                        <option value="120">About 2 hours</option>
+                        <option value="240">About 4 hours</option>
+                    </select>
+                </label>
+                <label>Format
+                    <select id="mood-format" name="format">
+                        <option value="ANY">Movie or series</option>
+                        <option value="MOVIE">Movie</option>
+                        <option value="TV">Series</option>
+                    </select>
+                </label>
+                <button class="button button-primary" type="submit">Find my anime <span aria-hidden="true">→</span></button>
+            </form>
+            <p class="mood-feedback" id="mood-feedback" role="status" aria-live="polite">Choose your vibe and we’ll make a short list.</p>
+            <div class="mood-results" id="mood-results"></div>
+        </section>
 
-    <input id="anime-input" type="text" placeholder="Enter Anime Name">
+        <section class="discover-section page-shell" id="discover" aria-labelledby="discover-title">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow eyebrow-muted">A WORLD OF ANIME</p>
+                    <h2 id="discover-title">Find your <span>next favorite.</span></h2>
+                </div>
+                <p class="section-description">Explore the collection, find a new world, and add the ones you love to your watchlist.</p>
+                <button class="button button-primary add-title-button" id="add-anime-button" type="button" hidden>＋ Add a title</button>
+            </div>
 
-    <button id="search-button">Search</button>
+            <div class="toolbar">
+                <label class="search-box" for="anime-input">
+                    <span class="search-icon" aria-hidden="true">⌕</span>
+                    <input id="anime-input" type="search" placeholder="Search titles, genres, studios..." autocomplete="off">
+                    <kbd>/</kbd>
+                </label>
+                <label class="sort-control" for="sort-select">
+                    <span>Sort by</span>
+                    <select id="sort-select">
+                        <option value="ratingHigh">Top rated</option>
+                        <option value="name">Name A–Z</option>
+                        <option value="ratingLow">Lowest rated</option>
+                        <option value="newest">Newest</option>
+                    </select>
+                </label>
+            </div>
 
+            <div class="browse-row">
+                <div class="genre-filters" id="genre-filters" aria-label="Filter by genre"></div>
+                <p class="results-count" id="results-count" aria-live="polite"></p>
+            </div>
 
-    <div id="anime-container"></div>
-    <a href="https://www.pinterest.com/">Printest</a>
-    
-    <select id="sort-select">
-        <option value="default">Sort by Option</option>
-        <option value="ratingHigh">Rating High-Low</option>
-        <option value="ratingLow">Rating Low-High</option>
-        <option value="name">Name A-Z</option>
-    </select>
+            <nav class="catalog-tabs" aria-label="Anime discovery">
+                <button class="catalog-tab is-active" type="button" data-catalog-mode="collection" aria-pressed="true">My collection</button>
+                <button class="catalog-tab" type="button" data-catalog-mode="browse" aria-pressed="false">Browse all</button>
+                <button class="catalog-tab" type="button" data-catalog-mode="trending" aria-pressed="false">Trending</button>
+                <button class="catalog-tab" type="button" data-catalog-mode="seasonal" aria-pressed="false">This season</button>
+                <button class="catalog-tab" type="button" data-catalog-mode="recommendations" aria-pressed="false">For you</button>
+            </nav>
+            <form class="semantic-search-form" id="semantic-search-form">
+                <label for="semantic-search-input">
+                    <strong>Search by meaning</strong>
+                    <span>Describe the kind of story you want, like “cozy slice of life with cooking”.</span>
+                </label>
+                <div>
+                    <input id="semantic-search-input" name="query" type="search" minlength="3" maxlength="240" placeholder="A warm fantasy about found family..." required>
+                    <button class="button button-primary" type="submit">Find similar</button>
+                </div>
+            </form>
+            <p class="semantic-search-feedback" id="semantic-search-feedback" role="status" aria-live="polite"></p>
+            <div class="discovery-filters" id="discovery-filters" hidden>
+                <label>Year<select id="filter-year"><option value="">Any year</option></select></label>
+                <label>Season<select id="filter-season"><option value="">Any season</option><option value="WINTER">Winter</option><option value="SPRING">Spring</option><option value="SUMMER">Summer</option><option value="FALL">Fall</option></select></label>
+                <label>Format<select id="filter-format"><option value="">Any format</option><option value="TV">TV</option><option value="MOVIE">Movie</option><option value="OVA">OVA</option><option value="ONA">ONA</option><option value="SPECIAL">Special</option></select></label>
+                <label>Status<select id="filter-status"><option value="">Any status</option><option value="RELEASING">Airing</option><option value="FINISHED">Finished</option><option value="NOT_YET_RELEASED">Upcoming</option></select></label>
+                <label>Genre<select id="filter-genre"><option value="">Any genre</option></select></label>
+                <label>Minimum score<select id="filter-rating"><option value="">Any score</option><option value="5">5+</option><option value="7">7+</option><option value="8">8+</option><option value="9">9+</option></select></label>
+                <label>Sort by<select id="filter-sort"><option value="POPULARITY_DESC">Popularity</option><option value="SCORE_DESC">Highest rated</option><option value="TRENDING_DESC">Trending</option><option value="START_DATE_DESC">Newest</option></select></label>
+                <button class="button button-primary" id="apply-discovery-filters" type="button">Apply filters</button>
+            </div>
+            <div class="catalog-state" id="catalog-state" role="status" hidden></div>
+            <div class="anime-grid" id="anime-container" aria-live="polite"></div>
+            <div class="catalog-pagination" id="catalog-pagination" hidden>
+                <button class="button button-quiet" id="catalog-prev" type="button">← Previous</button>
+                <span id="catalog-page-label"></span>
+                <button class="button button-quiet" id="catalog-next" type="button">Next →</button>
+            </div>
+            <dialog class="anime-dialog" id="anime-dialog" aria-labelledby="anime-dialog-title">
+                <div class="dialog-heading">
+                    <div>
+                        <p class="eyebrow eyebrow-muted">GROW THE COLLECTION</p>
+                        <h2 id="anime-dialog-title">Add an anime</h2>
+                    </div>
+                    <button class="dialog-close" id="anime-dialog-close" type="button" aria-label="Close form">×</button>
+                </div>
+                <section class="catalog-import" aria-labelledby="catalog-import-title">
+                    <h3 id="catalog-import-title">Find it in AniList</h3>
+                    <p>Search the public anime catalog and import the details and cover in one click.</p>
+                    <form class="catalog-search-form" id="catalog-search-form">
+                        <label class="visually-hidden" for="catalog-search-input">Search AniList</label>
+                        <input id="catalog-search-input" name="q" type="search" minlength="2" maxlength="80" placeholder="Search anime titles..." required>
+                        <button class="button button-primary" type="submit">Search</button>
+                    </form>
+                    <p class="catalog-search-feedback" id="catalog-search-feedback" role="status"></p>
+                    <div class="catalog-search-results" id="catalog-search-results"></div>
+                    <button class="button button-primary catalog-import-all" id="catalog-import-all" type="button" hidden>Import all results</button>
+                    <p class="catalog-attribution">Catalog data and cover art provided by <a href="https://anilist.co" target="_blank" rel="noreferrer">AniList</a>.</p>
+                </section>
+                <p class="manual-entry-divider">Or add the details yourself</p>
+                <form class="anime-form" id="anime-form">
+                    <label>Title<input name="title" required maxlength="100" placeholder="e.g. Your favorite series"></label>
+                    <div class="form-row">
+                        <label>Genres<input name="genre" required maxlength="100" placeholder="Fantasy, Adventure"></label>
+                        <label>Studio<input name="studio" maxlength="100" placeholder="Studio name"></label>
+                    </div>
+                    <div class="form-row">
+                        <label>Rating (0–10)<input name="rating" type="number" min="0" max="10" step="0.1"></label>
+                        <label>Episodes<input name="episode" type="number" min="1" step="1"></label>
+                    </div>
+                    <div class="form-row">
+                        <label>Release date<input name="released_date" type="date"></label>
+                        <label>Poster image URL<input name="cover_image" type="url" maxlength="500" placeholder="https://..."></label>
+                    </div>
+                    <label>Synopsis<textarea name="description" required maxlength="10000" rows="4" placeholder="What makes this story special?"></textarea></label>
+                    <p class="form-feedback" id="anime-form-feedback" role="status"></p>
+                    <button class="button button-primary form-submit" type="submit">Add to the collection →</button>
+                </form>
+            </dialog>
+        </section>
 
-    <script src="/static/js/anime.js"></script>
+        <section class="popular-banner page-shell" id="popular">
+            <div class="popular-copy">
+                <p class="eyebrow"><span class="eyebrow-dot"></span> KEEP EXPLORING</p>
+                <h2>Every great story<br>starts with <span>one episode.</span></h2>
+                <p>Build your list, follow your curiosity, and let your next obsession find you.</p>
+                <a class="button button-primary" href="#discover">Browse the collection <span aria-hidden="true">→</span></a>
+            </div>
+            <div class="popular-symbol" aria-hidden="true">✳</div>
+        </section>
+    </main>
 
+    <footer class="site-footer">
+        <a class="brand brand-small" href="/"><span class="brand-mark" aria-hidden="true">✦</span><span>anime<span class="brand-accent">hub</span></span></a>
+        <p>Made for the stories that stay with you.</p>
+        <a href="#discover">Back to top ↑</a>
+    </footer>
 </body>
 </html>

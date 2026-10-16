@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#111116">
+    <meta name="description" content="Sign in or join Anime Hub to build your anime watchlist.">
+    <title>Join Anime Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=15">
+    <script src="/static/js/api.js" defer></script>
+    <script src="/static/js/main.js" defer></script>
+    <script src="/static/js/login.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="/" aria-label="Anime Hub home"><span class="brand-mark" aria-hidden="true">✦</span><span>anime<span class="brand-accent">hub</span></span></a>
+        <a class="back-link" href="/">← Back to discover</a>
+    </header>
+    <main class="auth-main page-shell">
+        <section class="auth-card" aria-labelledby="auth-title">
+            <p class="eyebrow"><span class="eyebrow-dot"></span> YOUR STORY STARTS HERE</p>
+            <h1 id="auth-title">Welcome back.</h1>
+            <p class="auth-intro" id="auth-intro">Sign in to save your favorites, share reviews, and find your next great story.</p>
+            <form class="auth-form" id="auth-form">
+                <label id="name-field" hidden>Display name
+                    <input name="name" autocomplete="name" minlength="2" maxlength="50" placeholder="What should we call you?">
+                </label>
+                <label>Email address
+                    <input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com">
+                </label>
+                <label>Password
+                    <input name="password" type="password" autocomplete="current-password" required minlength="8" maxlength="128" placeholder="At least 8 characters">
+                </label>
+                <p class="auth-feedback" id="auth-feedback" role="status"></p>
+                <button class="button button-primary" id="auth-submit" type="submit">Sign in →</button>
+            </form>
+            <p class="auth-switch"><span id="switch-copy">New to Anime Hub?</span>
+                <button id="auth-switch" type="button">Create an account</button>
+            </p>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <a class="brand brand-small" href="/"><span class="brand-mark" aria-hidden="true">✦</span><span>anime<span class="brand-accent">hub</span></span></a>
+        <p>Made for the stories that stay with you.</p>
+        <a href="/">Back to discover</a>
+    </footer>
+</body>
+</html>

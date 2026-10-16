@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#111116">
+    <meta name="description" content="Your Anime Hub profile, watchlist, and contributions.">
+    <title>Your profile — Anime Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=20">
+    <script src="/static/js/api.js" defer></script>
+    <script src="/static/js/main.js" defer></script>
+    <script src="/static/js/profile.js?v=9" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="/" aria-label="Anime Hub home"><span class="brand-mark" aria-hidden="true">✦</span><span>anime<span class="brand-accent">hub</span></span></a>
+        <div class="header-actions">
+            <a class="back-link" href="/">← Discover anime</a>
+            <div class="auth-area" id="auth-area" hidden><a class="sign-in-link" href="/login.html">Sign in</a></div>
+        </div>
+    </header>
+    <main class="profile-main page-shell profile-page">
+        <div id="profile-feedback" class="profile-feedback" role="status">Loading your profile...</div>
+        <section id="profile-content" hidden>
+            <section class="profile-cover" aria-labelledby="profile-title">
+                <img class="profile-cover-art" id="profile-cover-art" alt="" hidden>
+                <div class="profile-cover-shade"></div>
+                <div class="profile-identity">
+                    <div class="profile-avatar">
+                        <img id="profile-avatar-image" alt="" hidden>
+                        <span id="profile-avatar-initial" aria-hidden="true"></span>
+                    </div>
+                    <div class="profile-identity-copy">
+                        <p class="eyebrow eyebrow-muted">ANIME HUB MEMBER</p>
+                        <h1 id="profile-title">Your profile</h1>
+                        <p class="profile-intro" id="profile-bio">Your anime collection, all in one place.</p>
+                        <span class="profile-meta" id="profile-meta"></span>
+                    </div>
+                    <a class="button button-primary profile-discover-button" href="/#discover">Discover anime <span aria-hidden="true">→</span></a>
+                </div>
+            </section>
+            <div class="profile-stat-strip" aria-label="Library summary">
+                <div><strong id="profile-stat-tracked">0</strong><span>Tracked</span></div>
+                <div><strong id="profile-stat-watching">0</strong><span>Watching</span></div>
+                <div><strong id="profile-stat-completed">0</strong><span>Completed</span></div>
+                <div><strong id="profile-stat-saved">0</strong><span>Saved</span></div>
+            </div>
+            <section class="profile-library profile-panel" aria-labelledby="profile-library-title">
+                <div class="profile-library-heading">
+                    <div>
+                        <p class="eyebrow eyebrow-muted">YOUR COLLECTION</p>
+                        <h2 id="profile-library-title">My library</h2>
+                    </div>
+                    <span class="profile-library-count" id="profile-library-count">0 titles</span>
+                </div>
+                <div class="profile-library-tabs" role="group" aria-label="Filter library">
+                    <button class="profile-library-tab" type="button" data-library-filter="watching" aria-pressed="false">Watching <span id="count-watching">0</span></button>
+                    <button class="profile-library-tab" type="button" data-library-filter="plan_to_watch" aria-pressed="false">To watch <span id="count-plan_to_watch">0</span></button>
+                    <button class="profile-library-tab" type="button" data-library-filter="completed" aria-pressed="false">Watched <span id="count-completed">0</span></button>
+                    <button class="profile-library-tab" type="button" data-library-filter="saved" aria-pressed="false">Saved <span id="count-saved">0</span></button>
+                    <button class="profile-library-tab" type="button" data-library-filter="all" aria-pressed="true">All titles <span id="count-all">0</span></button>
+                </div>
+                <div class="profile-library-grid" id="profile-library-grid" aria-live="polite"></div>
+            </section>
+
+            <details class="profile-settings profile-panel">
+                <summary>Account settings <span>Update your profile or password</span></summary>
+                <div class="profile-settings-grid">
+                    <section aria-labelledby="profile-edit-title">
+                        <h2 id="profile-edit-title">Your details</h2>
+                        <form class="profile-form" id="profile-form">
+                            <label>Display name<input name="name" required minlength="2" maxlength="50"></label>
+                            <label>Email address<input name="email" type="email" readonly></label>
+                            <label>About you<textarea name="bio" rows="4" maxlength="500" placeholder="Tell the community what you love watching..."></textarea></label>
+                            <label>Profile image URL<input name="cover_image" type="url" maxlength="500" placeholder="https://..."></label>
+                            <label>Upload profile picture<input id="profile-image-file" name="profile_image" type="file" accept="image/jpeg,image/png,image/webp"></label>
+                            <p class="profile-upload-hint">JPEG, PNG, or WebP · up to 900 KiB</p>
+                            <button class="button button-quiet profile-upload-button" id="profile-image-upload" type="button">Upload picture</button>
+                            <p class="profile-feedback" id="profile-image-feedback" role="status" aria-live="polite"></p>
+                            <p class="profile-feedback" id="profile-form-feedback" role="status"></p>
+                            <button class="button button-primary" type="submit">Save profile</button>
+                        </form>
+                    </section>
+                    <section aria-labelledby="password-title">
+                        <h2 id="password-title">Change password</h2>
+                        <form class="profile-form" id="password-form">
+                            <label>Current password<input name="current_password" type="password" autocomplete="current-password" required maxlength="128"></label>
+                            <label>New password<input name="new_password" type="password" autocomplete="new-password" required minlength="8" maxlength="128"></label>
+                            <label>Confirm new password<input name="confirm_password" type="password" autocomplete="new-password" required minlength="8" maxlength="128"></label>
+                            <p class="profile-feedback" id="password-feedback" role="status" aria-live="polite"></p>
+                            <button class="button button-primary" type="submit">Update password</button>
+                        </form>
+                    </section>
+                </div>
+            </details>
+
+            <div class="profile-collection">
+                <section class="profile-panel" aria-labelledby="profile-created-title">
+                    <h2 id="profile-created-title">Your titles</h2>
+                    <div class="profile-anime-list" id="profile-created"></div>
+                </section>
+                <section class="profile-panel" aria-labelledby="profile-queue-title">
+                    <h2 id="profile-queue-title">Next up</h2>
+                    <p class="profile-panel-intro">Arrange your plan-to-watch list into a personal queue.</p>
+                    <p class="profile-feedback" id="profile-queue-feedback" role="status"></p>
+                    <div class="profile-anime-list" id="profile-queue"></div>
+                </section>
+                <section class="profile-panel" aria-labelledby="profile-taste-title">
+                    <h2 id="profile-taste-title">Your taste map</h2>
+                    <p class="profile-panel-intro">Your most common genres and studios across saved and tracked anime.</p>
+                    <div id="profile-taste"></div>
+                </section>
+                <section class="profile-panel" aria-labelledby="profile-airing-title">
+                    <h2 id="profile-airing-title">Airing for your list</h2>
+                    <p class="profile-panel-intro">Upcoming episodes for AniList titles you saved or marked as watching, shown in your local time.</p>
+                    <div class="profile-anime-list" id="profile-airing"></div>
+                </section>
+                <section class="profile-panel wrapped-recap" aria-labelledby="profile-recap-title">
+                    <div class="recap-heading">
+                        <div>
+                            <p class="eyebrow eyebrow-muted">YOUR PERSONAL ANIME RECAP</p>
+                            <h2 id="profile-recap-title">Your anime year</h2>
+                        </div>
+                        <label>Year
+                            <select id="profile-recap-year" aria-label="Recap year"></select>
+                        </label>
+                    </div>
+                    <div id="profile-recap" aria-live="polite"></div>
+                </section>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <a class="brand brand-small" href="/"><span class="brand-mark" aria-hidden="true">✦</span><span>anime<span class="brand-accent">hub</span></span></a>
+        <p>Made for the stories that stay with you.</p>
+        <a href="/">Back to discover</a>
+    </footer>
+</body>
+</html>

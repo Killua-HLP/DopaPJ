@@ -157,9 +157,7 @@ Think:
 
 "Give me the first one that matches."
 
-🔤 String Methods You'll Use A LOT
-
-Since you're building a search system, these are important too.
+String Methods
 
 Method	Meaning
 .toUpperCase()	Convert to uppercase
@@ -174,7 +172,7 @@ Method	Meaning
 
 Example:
 
-const name = "  Naruto  ";
+const name = "Naruto";
 
 name.trim();
 
@@ -182,9 +180,7 @@ name.trim();
 
 Very useful for search boxes.
 
-⭐ Super Important Mental Map
-
-Put this in your notes:
+Important Mental Map
 
 ARRAY METHODS
 

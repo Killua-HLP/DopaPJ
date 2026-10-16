@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0e18">
+    <title>Admin Console — Anime Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=17">
+    <link rel="stylesheet" href="/static/css/admin.css">
+    <script src="/static/js/api.js" defer></script>
+    <script src="/static/js/admin.js" defer></script>
+</head>
+<body class="admin-body">
+    <header class="site-header admin-header">
+        <a class="brand" href="/" aria-label="Anime Hub home">
+            <span class="brand-mark" aria-hidden="true">✦</span>
+            <span>anime<span class="brand-accent">hub</span></span>
+        </a>
+        <div class="admin-header-right">
+            <span class="admin-secure-label">ADMIN CONSOLE</span>
+            <a class="back-link" href="/profile.html">Account settings</a>
+            <a class="back-link" href="/">← Back to site</a>
+        </div>
+    </header>
+    <main class="admin-shell">
+        <section class="admin-welcome">
+            <div>
+                <p class="eyebrow eyebrow-muted">OPERATIONS CENTER</p>
+                <h1>Good work keeps the <span>community thriving.</span></h1>
+                <p>Review platform health, keep the catalog accurate, and take care of your community.</p>
+            </div>
+            <div class="admin-updated"><span class="admin-live-dot"></span><span id="admin-last-updated">Connecting securely…</span></div>
+        </section>
+
+        <div class="admin-feedback" id="admin-feedback" role="status" aria-live="polite"></div>
+
+        <section class="admin-metrics" id="admin-metrics" aria-label="Platform overview">
+            <article class="admin-metric"><span>Total users</span><strong id="metric-users">—</strong><small id="metric-active-users">Active accounts</small></article>
+            <article class="admin-metric"><span>Anime titles</span><strong id="metric-anime">—</strong><small>Local and AniList catalog</small></article>
+            <article class="admin-metric"><span>New this week</span><strong id="metric-registrations">—</strong><small>New registrations</small></article>
+            <article class="admin-metric admin-metric-alert"><span>Needs review</span><strong id="metric-pending">—</strong><small id="metric-comments">Community comments</small></article>
+            <article class="admin-metric"><span>AniList cache</span><strong id="metric-cache">—</strong><small id="metric-cache-stale">Loading cache status</small></article>
+        </section>
+
+        <section class="admin-activity-panel">
+            <div class="admin-section-heading">
+                <div><p class="eyebrow eyebrow-muted">LATEST UPDATES</p><h2>Recent activity</h2></div>
+                <button class="admin-text-button" type="button" id="refresh-overview">Refresh ↻</button>
+            </div>
+            <div class="admin-activity-list" id="admin-activity-list"><p class="admin-empty">Loading platform activity…</p></div>
+        </section>
+
+        <section class="admin-workspace">
+            <div class="admin-section-heading admin-workspace-heading">
+                <div><p class="eyebrow eyebrow-muted">TAKE ACTION</p><h2>Manage Anime Hub</h2></div>
+                <div class="admin-workspace-tools">
+                    <label class="admin-search" hidden><span aria-hidden="true">⌕</span><input id="admin-search" type="search" placeholder="Search anime or users…" autocomplete="off"></label>
+                    <button class="button button-primary" type="button" id="admin-create-anime" hidden>＋ Add anime</button>
+                </div>
+            </div>
+            <nav class="admin-tabs" aria-label="Administration areas">
+                <button type="button" class="admin-tab is-active" data-admin-tab="anime" aria-pressed="true">Anime management</button>
+                <button type="button" class="admin-tab" data-admin-tab="comments" aria-pressed="false">Comment queue <span id="comment-tab-count">0</span></button>
+                <button type="button" class="admin-tab" data-admin-tab="users" aria-pressed="false">Users</button>
+                <button type="button" class="admin-tab" data-admin-tab="audit" aria-pressed="false">Moderation log</button>
+            </nav>
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead id="admin-table-head"></thead>
+                    <tbody id="admin-table-body"><tr><td class="admin-empty" colspan="5">Loading administration data…</td></tr></tbody>
+                </table>
+            </div>
+            <div class="admin-pagination">
+                <span id="admin-page-label">—</span>
+                <div><button class="admin-page-button" type="button" id="admin-page-prev" aria-label="Previous page">←</button><button class="admin-page-button" type="button" id="admin-page-next" aria-label="Next page">→</button></div>
+            </div>
+        </section>
+        <p class="admin-footnote">Every moderation action is recorded with the administrator account that performed it.</p>
+    </main>
+
+    <dialog class="admin-dialog" id="anime-dialog">
+        <form id="anime-form" method="dialog">
+            <div class="admin-dialog-heading"><div><p class="eyebrow eyebrow-muted">CATALOG EDITOR</p><h2 id="anime-dialog-title">Add an anime</h2></div><button class="admin-dialog-close" type="button" id="anime-dialog-close" aria-label="Close">×</button></div>
+            <input type="hidden" name="anime_id">
+            <label>Title<input name="title" required maxlength="100"></label>
+            <div class="admin-form-grid">
+                <label>Genres<input name="genre" required maxlength="100" placeholder="Adventure, Fantasy"></label>
+                <label>Studio<input name="studio" maxlength="100"></label>
+                <label>Rating (0–10)<input name="rating" type="number" min="0" max="10" step="0.1"></label>
+                <label>Episodes<input name="episode" type="number" min="1"></label>
+                <label>Release date<input name="released_date" type="date"></label>
+                <label>Cover image URL<input name="cover_image" type="url" maxlength="500"></label>
+                <label class="admin-form-wide">AniList source URL (optional)<input name="source_url" type="url" maxlength="500" placeholder="https://anilist.co/anime/…"></label>
+                <label class="admin-form-wide">Description<textarea name="description" rows="6" required maxlength="10000"></textarea></label>
+            </div>
+            <div class="admin-dialog-actions"><button class="admin-text-button" type="button" id="anime-dialog-cancel">Cancel</button><button class="button button-primary" type="submit" id="anime-save-button">Save title</button></div>
+        </form>
+    </dialog>
+</body>
+</html>
