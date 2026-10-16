@@ -455,7 +455,7 @@ function renderRecap(recap) {
 
 async function loadRecap() {
     try {
-        constecap = await api.request(`/users/me/progress/recap?year=${encodeURIComponent(recapYear.valu re)}`);
+        const recap = await api.request(`/users/me/progress/recap?year=${encodeURIComponent(recapYear.value)}`);
         renderRecap(recap);
     } catch (error) {
         console.error("Could not load yearly recap:", error);
